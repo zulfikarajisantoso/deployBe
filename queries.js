@@ -18,14 +18,7 @@ const pool = new Pool({
   connectionString: process.env.POSTGRES_URL + "?sslmode=require",
 });
 
-pool.connect((err) => {
-  if(err){
-    console.log("err");
-  }
-  else{
-    console.log("bisa");
-  }
-})
+
 
 const addData = (req, res) => {
   const {
@@ -35,12 +28,13 @@ const addData = (req, res) => {
     tandeman,
     notelp,
     no_tps,
-    no_kecamatan,
-    no_kabupaten,
+    kecamatan,
+    kabupaten,
   } = req.body;
 
+  console.log(kecamatan);
   const query =
-    "INSERT INTO data_anggota (nik, nama_relawan, koordinator, tandeman, notelp,   no_tps, no_kecamatan, no_kabupaten) VALUES ($1, $2, $3, $4, $5, $6, $7, $8 ) RETURNING *";
+    "INSERT INTO data_anggota (nik, nama_relawan, koordinator, tandeman, notelp,   no_tps, kecamatan, kabupaten) VALUES ($1, $2, $3, $4, $5, $6, $7, $8 ) RETURNING *";
   const values = [
     nik,
     nama_relawan,
@@ -48,8 +42,8 @@ const addData = (req, res) => {
     tandeman,
     notelp,
     no_tps,
-    no_kecamatan,
-    no_kabupaten,
+    kecamatan,
+    kabupaten,
   ];
 
   pool.query(query, values, (error, results) => {
